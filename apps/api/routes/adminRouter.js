@@ -7,6 +7,6 @@ import { getAdminPosts } from '../controllers/adminController.js';
 
 const adminRouter = Router();
 
-authRouter.get('/posts', isAuth, isAdmin, getAdminPosts);
+adminRouter.get('/posts', isAuth, isAdmin, getAdminPosts);
 
 export { adminRouter };
