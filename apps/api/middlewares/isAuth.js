@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { getUser } from '../services/userService.js';
 
+import 'dotenv/config';
+
 const isAuth = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 

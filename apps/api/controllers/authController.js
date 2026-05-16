@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+import 'dotenv/config';
+
 import { getUser, getUserByUsername } from '../services/userService.js';
 
 const getMe = async (req, res, next) => {

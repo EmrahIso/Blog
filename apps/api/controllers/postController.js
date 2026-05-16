@@ -33,7 +33,7 @@ const getPost = async (req, res, next) => {
 
 const postPosts = async (req, res, next) => {
   try {
-    const { title, description, content } = req.body;
+    const { title, description, content, imageUrl } = req.body;
     const userId = req.user.id;
 
     const user = await getUser({ id: userId });
@@ -42,7 +42,13 @@ const postPosts = async (req, res, next) => {
       return res.status(401).json({ msg: 'User not found' });
     }
 
-    const post = await addPost({ title, description, content, userId });
+    const post = await addPost({
+      title,
+      description,
+      content,
+      userId,
+      imageUrl,
+    });
 
     return res.json({ post });
   } catch (error) {
@@ -65,9 +71,15 @@ const postDeletePost = async (req, res, next) => {
 const putUpdatePost = async (req, res, next) => {
   try {
     const postId = req.params.id;
-    const { title, description, content } = req.body;
+    const { title, description, content, imageUrl } = req.body;
 
-    const post = await updatePost({ id: postId, title, description, content });
+    const post = await updatePost({
+      id: postId,
+      title,
+      description,
+      content,
+      imageUrl,
+    });
 
     return res.json({ success: true, post });
   } catch (error) {

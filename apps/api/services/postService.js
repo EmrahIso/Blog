@@ -28,7 +28,7 @@ const getPost = async ({ id }) => {
   return post;
 };
 
-const addPost = async ({ title, description, content, userId }) => {
+const addPost = async ({ title, description, content, userId, imageUrl }) => {
   if (!userId) throw new Error('userId is required!');
   if (!title) throw new Error('title is required!');
   if (!description) throw new Error('description is required!');
@@ -40,6 +40,7 @@ const addPost = async ({ title, description, content, userId }) => {
       title,
       description,
       content,
+      imageUrl,
     },
   });
 
@@ -58,7 +59,7 @@ const deletePost = async ({ id }) => {
   return post;
 };
 
-const updatePost = async ({ id, title, description, content }) => {
+const updatePost = async ({ id, title, description, content, imageUrl }) => {
   if (!id) throw new Error('postId is required!');
   if (!title) throw new Error('title is required!');
   if (!description) throw new Error('description is required!');
@@ -72,6 +73,7 @@ const updatePost = async ({ id, title, description, content }) => {
       title,
       description,
       content,
+      imageUrl,
     },
   });
 
