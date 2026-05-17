@@ -3,7 +3,12 @@ import jwt from 'jsonwebtoken';
 
 import 'dotenv/config';
 
-import { getUser, getUserByUsername } from '../services/userService.js';
+import {
+  getUser,
+  getUserByUsername,
+  createUser,
+  isUsernameTaken,
+} from '../services/userService.js';
 
 const getMe = async (req, res, next) => {
   try {
@@ -47,4 +52,25 @@ const postLogin = async (req, res, next) => {
   }
 };
 
-export { getMe, postLogin };
+const postRegister = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const isTaken = await isUsernameTaken({ username });
+
+    if (isTaken) return res.status(400).json({ msg: 'Username already taken' });
+
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    const user = await createUser({
+      username,
+      password: hashPassword,
+    });
+
+    res.status(201).json({ success: true, user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { getMe, postLogin, postRegister };
