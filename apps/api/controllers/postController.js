@@ -1,12 +1,26 @@
 import {
   getAllPosts,
-  getPost,
+  getAllPublishedPosts,
+  getOneUnpublishedPost,
   addPost,
   deletePost,
   updatePost,
   updatePublishPost,
 } from '../services/postService.js';
+
+import { uploadToSupabase } from '../services/supabaseService.js';
+
 import { getUser } from '../services/userService.js';
+
+const getPublishedPosts = async (req, res, next) => {
+  try {
+    const posts = await getAllPublishedPosts();
+
+    return res.json({ posts });
+  } catch (error) {
+    next(error);
+  }
+};
 
 const getPosts = async (req, res, next) => {
   try {
@@ -21,7 +35,15 @@ const getPosts = async (req, res, next) => {
 const getPost = async (req, res, next) => {
   try {
     const postId = req.params.id;
-    const post = await getPost({ id: postId });
+    const post = await getOneUnpublishedPost({ id: postId });
+
+    if (!post) {
+      return res.status(401).json({ msg: 'Post not found' });
+    }
+
+    if (!post.published) {
+      return res.status(401).json({ msg: 'Post is not published!' });
+    }
 
     return res.json({ post });
   } catch (error) {
@@ -33,8 +55,14 @@ const getPost = async (req, res, next) => {
 
 const postPosts = async (req, res, next) => {
   try {
-    const { title, description, content, imageUrl } = req.body;
+    const { title, description, content } = req.body;
     const userId = req.user.id;
+
+    let imageUrl = null;
+
+    if (req.file) {
+      imageUrl = await uploadToSupabase(req.file);
+    }
 
     const user = await getUser({ id: userId });
 
@@ -90,18 +118,17 @@ const putUpdatePost = async (req, res, next) => {
 const patchPublishPost = async (req, res, next) => {
   try {
     const postId = req.params.id;
+    const { published } = req.body;
 
-    const post = await getPost({ id: postId });
+    const post = await getOneUnpublishedPost({ id: postId });
 
     if (!post) {
       return res.status(401).json({ msg: 'Post not found' });
     }
 
-    const newPostPublishValue = post.publish === true ? false : true;
-
     const newPost = await updatePublishPost({
       id: postId,
-      publishValue: newPostPublishValue,
+      publishValue: published,
     });
 
     return res.json({ success: true, newPost });
@@ -112,6 +139,7 @@ const patchPublishPost = async (req, res, next) => {
 
 export {
   getPosts,
+  getPublishedPosts,
   getPost,
   postPosts,
   postDeletePost,

@@ -6,15 +6,15 @@ import 'dotenv/config';
 const isAuth = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ msg: 'Not authorized!' });
-  }
-
   try {
+    if (!authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ msg: 'Not authorized!' });
+    }
+
     const bearerToken = authHeader.split(' ')[1];
     const decoded = jwt.verify(bearerToken, process.env.JWT_SECRET);
 
-    const user = await getUser({ id: decoded.id });
+    const user = await getUser({ id: decoded.userId });
 
     if (!user) {
       return res.status(401).json({ msg: 'User no longer exists.' });
@@ -23,7 +23,7 @@ const isAuth = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    return res.status(401).json({ msg: 'Token invalid' });
+    return res.status(401).json({ msg: 'Unauthorized' });
   }
 };
 

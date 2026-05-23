@@ -1,16 +1,17 @@
 import { Router } from 'express';
 
 import {
+  getPublishedPosts,
   getPosts,
   getPost,
   postPosts,
   postDeletePost,
   patchPublishPost,
+  putUpdatePost,
 } from '../controllers/postController.js';
 
 import { isAuth } from '../middlewares/isAuth.js';
 import { checkPostOwnership } from '../middlewares/checkPostOwnership.js';
-import { isAdmin } from '../middlewares/isAdmin.js';
 
 import {
   postIdValidatorRules,
@@ -18,19 +19,31 @@ import {
 } from '../validators/postIdValidator.js';
 
 import {
+  patchPublishPostBodyValidationRules,
+  validatePatchPublish,
+} from '../validators/patchPublishPostBodyValidator.js';
+
+import {
   postBodyValidator,
   validatePostBody,
 } from '../validators/postBodyValidator.js';
 
+import { validateUpload } from '../middlewares/validateUpload.js';
+
+import { upload } from '../config/multer.js';
+
 const postRouter = Router();
 
-postRouter.get('/', getPosts);
+postRouter.get('/', getPublishedPosts);
+postRouter.get('/all', isAuth, getPosts);
+
 postRouter.get('/:id', postIdValidatorRules, validatePostId, getPost);
 
 postRouter.post(
   '/',
   isAuth,
-  isAdmin,
+  upload.single('image'),
+  validateUpload,
   postBodyValidator,
   validatePostBody,
   postPosts
@@ -39,7 +52,8 @@ postRouter.post(
 postRouter.put(
   '/:id',
   isAuth,
-  isAdmin,
+  upload.single('image'),
+  validateUpload,
   postIdValidatorRules,
   validatePostId,
   postBodyValidator,
@@ -51,7 +65,6 @@ postRouter.put(
 postRouter.delete(
   '/:id',
   isAuth,
-  isAdmin,
   postIdValidatorRules,
   validatePostId,
   checkPostOwnership,
@@ -61,9 +74,10 @@ postRouter.delete(
 postRouter.patch(
   '/:id',
   isAuth,
-  isAdmin,
   postIdValidatorRules,
   validatePostId,
+  patchPublishPostBodyValidationRules,
+  validatePatchPublish,
   checkPostOwnership,
   patchPublishPost
 );

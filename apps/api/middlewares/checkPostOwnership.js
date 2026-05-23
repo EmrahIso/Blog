@@ -1,11 +1,11 @@
-import { getPost } from '../services/postService';
+import { getOneUnpublishedPost } from '../services/postService.js';
 
 const checkPostOwnership = async (req, res, next) => {
   try {
     const postId = req.params.id;
     const userId = req.user.id;
 
-    const post = await getPost({ id: postId });
+    const post = await getOneUnpublishedPost({ id: postId });
 
     if (!post) {
       return res.status(404).json({ msg: 'Post not found' });

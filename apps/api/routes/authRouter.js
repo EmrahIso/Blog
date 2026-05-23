@@ -1,6 +1,10 @@
 import { Router } from 'express';
 
-import { getMe, postLogin } from '../controllers/authController.js';
+import {
+  getMe,
+  postLogin,
+  postRegister,
+} from '../controllers/authController.js';
 
 import { isAuth } from '../middlewares/isAuth.js';
 

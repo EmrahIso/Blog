@@ -1,6 +1,6 @@
 import { prisma } from '../lib/prisma.js';
 
-const getAllPosts = async () => {
+const getAllPublishedPosts = async () => {
   const posts = await prisma.post.findMany({
     where: {
       published: true,
@@ -13,13 +13,22 @@ const getAllPosts = async () => {
   return posts;
 };
 
-const getPost = async ({ id }) => {
+const getAllPosts = async () => {
+  const posts = await prisma.post.findMany({
+    orderBy: {
+      createdAt: 'asc',
+    },
+  });
+
+  return posts;
+};
+
+const getOneUnpublishedPost = async ({ id }) => {
   if (!id) throw new Error('postId is required!');
 
   const post = await prisma.post.findUnique({
     where: {
       id,
-      published: true,
     },
   });
 
@@ -97,9 +106,10 @@ const updatePublishPost = async ({ id, publishValue }) => {
 
 export {
   getAllPosts,
-  getPost,
+  getAllPublishedPosts,
   addPost,
   deletePost,
   updatePost,
   updatePublishPost,
+  getOneUnpublishedPost,
 };
