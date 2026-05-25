@@ -51,8 +51,6 @@ const getPost = async (req, res, next) => {
   }
 };
 
-// ADMIN
-
 const postPosts = async (req, res, next) => {
   try {
     const { title, description, content } = req.body;

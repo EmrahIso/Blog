@@ -10,8 +10,8 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/auth', authRouter);
-app.use('/posts', postRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/posts', postRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);
