@@ -97,7 +97,13 @@ const postDeletePost = async (req, res, next) => {
 const putUpdatePost = async (req, res, next) => {
   try {
     const postId = req.params.id;
-    const { title, description, content, imageUrl } = req.body;
+    const { title, description, content } = req.body;
+
+    let imageUrl = null;
+
+    if (req.file) {
+      imageUrl = await uploadToSupabase(req.file);
+    }
 
     const post = await updatePost({
       id: postId,
