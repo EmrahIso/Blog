@@ -41,8 +41,18 @@ postRouter.get('/:id', postIdValidatorRules, validatePostId, getPost);
 
 postRouter.post(
   '/',
+  (req, res, next) => {
+    console.log('🔥 ROUTE HIT');
+    next();
+  },
   isAuth,
   upload.single('image'),
+  (req, res, next) => {
+    console.log('🔥 AFTER MULTER');
+    console.log('FILE:', req.file);
+    console.log('BODY:', req.body);
+    next();
+  },
   validateUpload,
   postBodyValidator,
   validatePostBody,
