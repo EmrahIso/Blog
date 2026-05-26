@@ -32,4 +32,7 @@ app.listen(PORT, () => {
  * 3. Bolji error Handling
  * 4. Backend Testing
  * 5. 404 hanlder
+ * 6. Odabrati nacin authentifikacije i proslijedjivanja JWT-a
+ * 7. Kad se obrise post / promjeni slika posta -> obrisati automatski sliku sa posta,
+ * 8. ograniciti korisnika na 12 postova
  */
