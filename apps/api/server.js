@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/auth', authRouter);
 app.use('/api/posts', postRouter);
@@ -30,4 +31,5 @@ app.listen(PORT, () => {
  * 2. Confirm password
  * 3. Bolji error Handling
  * 4. Backend Testing
+ * 5. 404 hanlder
  */

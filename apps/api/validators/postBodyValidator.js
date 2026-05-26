@@ -19,12 +19,6 @@ const postBodyValidator = [
     .withMessage('Content is required.')
     .isLength({ min: 20, max: 10000 })
     .withMessage('Content must be between 20 and 10000 characters long.'),
-  body('imageUrl')
-    .optional()
-    .isURL()
-    .withMessage('Image must be a valid URL')
-    .matches(/^https:\/\/.*$/)
-    .withMessage('Image must be HTTPS URL'),
 ];
 
 function validatePostBody(req, res, next) {
