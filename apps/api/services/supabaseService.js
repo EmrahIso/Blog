@@ -3,7 +3,7 @@ import sharp from 'sharp';
 import { supabase } from '../config/supabase.js';
 import { fileTypeFromBuffer } from 'file-type';
 
-const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
 
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 

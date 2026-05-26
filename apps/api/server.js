@@ -22,3 +22,12 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Api is running on port: ${PORT}`);
 });
+
+/**
+ * TODO
+ *
+ * 1. Dokumentacija
+ * 2. Confirm password
+ * 3. Bolji error Handling
+ * 4. Backend Testing
+ */
